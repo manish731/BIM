@@ -1,0 +1,1802 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Manish_Aryal — Bachelor's Programs Hub</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --ink: #0d0d0d;
+    --paper: #f5f0e8;
+    --cream: #ede8d8;
+    --accent: #e84d0e;
+    --accent2: #1a56e8;
+    --accent3: #22b97a;
+    --gold: #d4a017;
+    --muted: #7a7265;
+    --card-bg: #ffffff;
+    --border: rgba(13,13,13,0.12);
+
+    --bim: #e84d0e;
+    --csit: #1a56e8;
+    --bit: #9b27af;
+    --bca: #22b97a;
+    --bbs: #d4a017;
+    --bba: #e84d7e;
+    --bed: #0ea5e9;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    overflow-x: hidden;
+  }
+
+  /* ─── NOISE TEXTURE OVERLAY ─── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.5;
+  }
+
+  /* ─── NAVBAR ─── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 3rem;
+    background: rgba(245,240,232,0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 1.5rem;
+    letter-spacing: -0.03em;
+    color: var(--ink);
+    text-decoration: none;
+  }
+
+  .nav-logo span { color: var(--accent); }
+
+  .nav-links {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--muted);
+    text-decoration: none;
+    letter-spacing: 0.01em;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--accent); }
+
+  .nav-cta {
+    font-family: 'Syne', sans-serif;
+    font-weight: 600;
+    font-size: 0.875rem;
+    background: var(--ink);
+    color: var(--paper);
+    padding: 0.55rem 1.4rem;
+    border-radius: 2rem;
+    text-decoration: none;
+    transition: background 0.2s, transform 0.2s;
+  }
+
+  .nav-cta:hover { background: var(--accent); transform: translateY(-1px); }
+
+  /* ─── HERO ─── */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    padding: 8rem 3rem 4rem;
+    gap: 3rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::after {
+    content: 'EDU';
+    position: absolute;
+    right: -2rem;
+    bottom: -4rem;
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 22vw;
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(13,13,13,0.06);
+    pointer-events: none;
+    user-select: none;
+    line-height: 1;
+  }
+
+  .hero-content { position: relative; z-index: 2; }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--ink);
+    color: var(--paper);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    padding: 0.35rem 0.9rem;
+    border-radius: 2rem;
+    margin-bottom: 1.5rem;
+    letter-spacing: 0.05em;
+    animation: fadeUp 0.6s ease both;
+  }
+
+  .hero-badge::before {
+    content: '';
+    width: 6px; height: 6px;
+    background: var(--accent3);
+    border-radius: 50%;
+    animation: pulse 1.5s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(1.3); }
+  }
+
+  .hero h1 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: clamp(2.8rem, 5vw, 4.8rem);
+    line-height: 1.0;
+    letter-spacing: -0.04em;
+    margin-bottom: 1.5rem;
+    animation: fadeUp 0.6s 0.1s ease both;
+  }
+
+  .hero h1 .highlight {
+    color: var(--accent);
+    position: relative;
+  }
+
+  .hero h1 .highlight::after {
+    content: '';
+    position: absolute;
+    bottom: 4px;
+    left: 0; right: 0;
+    height: 3px;
+    background: var(--accent);
+    transform: scaleX(0);
+    transform-origin: left;
+    animation: lineIn 0.8s 0.8s ease both;
+  }
+
+  @keyframes lineIn {
+    to { transform: scaleX(1); }
+  }
+
+  .hero p {
+    font-size: 1.1rem;
+    color: var(--muted);
+    line-height: 1.7;
+    max-width: 480px;
+    margin-bottom: 2rem;
+    animation: fadeUp 0.6s 0.2s ease both;
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    flex-wrap: wrap;
+    animation: fadeUp 0.6s 0.3s ease both;
+  }
+
+  .btn-primary {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 0.95rem;
+    background: var(--accent);
+    color: white;
+    padding: 0.8rem 2rem;
+    border-radius: 3rem;
+    text-decoration: none;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 4px 24px rgba(232,77,14,0.3);
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(232,77,14,0.4);
+  }
+
+  .btn-secondary {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    font-size: 0.95rem;
+    color: var(--ink);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    transition: gap 0.2s;
+  }
+
+  .btn-secondary:hover { gap: 0.8rem; }
+
+  /* ─── HERO VISUAL ─── */
+  .hero-visual {
+    position: relative;
+    animation: fadeUp 0.6s 0.4s ease both;
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+
+  .stat-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 1.2rem;
+    padding: 1.5rem;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+
+  .stat-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.08);
+  }
+
+  .stat-card.featured {
+    grid-column: span 2;
+    background: var(--ink);
+    color: var(--paper);
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+  }
+
+  .stat-number {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 2.5rem;
+    line-height: 1;
+    color: var(--accent);
+  }
+
+  .stat-label {
+    font-size: 0.85rem;
+    color: var(--muted);
+    margin-top: 0.25rem;
+  }
+
+  .stat-card.featured .stat-label { color: rgba(245,240,232,0.6); }
+
+  .stat-icon {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+  }
+
+  /* ─── SECTION COMMON ─── */
+  section {
+    padding: 5rem 3rem;
+  }
+
+  .section-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--muted);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 0.75rem;
+  }
+
+  .section-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: clamp(2rem, 3.5vw, 3rem);
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    margin-bottom: 1rem;
+  }
+
+  .section-sub {
+    color: var(--muted);
+    font-size: 1.05rem;
+    line-height: 1.7;
+    max-width: 560px;
+    margin-bottom: 3rem;
+  }
+
+  /* ─── COURSES SECTION ─── */
+  #courses { background: var(--cream); }
+
+  .courses-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-bottom: 3rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .filter-tabs {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .filter-tab {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 500;
+    padding: 0.4rem 1rem;
+    border: 1px solid var(--border);
+    border-radius: 2rem;
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.2s;
+    color: var(--muted);
+  }
+
+  .filter-tab:hover, .filter-tab.active {
+    background: var(--ink);
+    color: var(--paper);
+    border-color: var(--ink);
+  }
+
+  .courses-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .course-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 1.5rem;
+    overflow: hidden;
+    transition: transform 0.25s, box-shadow 0.25s;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .course-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 16px 48px rgba(0,0,0,0.1);
+  }
+
+  .course-banner {
+    height: 120px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .course-banner-icon {
+    font-size: 3.5rem;
+    position: relative;
+    z-index: 2;
+  }
+
+  .course-banner::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    opacity: 0.15;
+    background: radial-gradient(circle at 30% 50%, white, transparent 70%);
+  }
+
+  .course-body { padding: 1.5rem; flex: 1; }
+
+  .course-program-tag {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    padding: 0.3rem 0.7rem;
+    border-radius: 0.5rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .course-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 1.15rem;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.5rem;
+    line-height: 1.3;
+  }
+
+  .course-desc {
+    font-size: 0.88rem;
+    color: var(--muted);
+    line-height: 1.6;
+    margin-bottom: 1.25rem;
+  }
+
+  .course-meta {
+    display: flex;
+    gap: 1rem;
+    font-size: 0.78rem;
+    color: var(--muted);
+    margin-bottom: 1.25rem;
+    flex-wrap: wrap;
+  }
+
+  .course-meta span {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+  }
+
+  .course-footer {
+    padding: 1rem 1.5rem;
+    border-top: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .course-btn {
+    font-family: 'Syne', sans-serif;
+    font-weight: 600;
+    font-size: 0.82rem;
+    padding: 0.5rem 1.2rem;
+    border-radius: 2rem;
+    text-decoration: none;
+    transition: all 0.2s;
+    border: 1.5px solid currentColor;
+  }
+
+  .difficulty-badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    padding: 0.25rem 0.6rem;
+    border-radius: 0.4rem;
+    background: var(--cream);
+    color: var(--muted);
+  }
+
+  /* ─── PROGRAM DEEP-DIVE ─── */
+  #programs { background: var(--paper); }
+
+  .programs-layout {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 2rem;
+    align-items: start;
+  }
+
+  .programs-nav {
+    position: sticky;
+    top: 5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .prog-nav-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.8rem 1rem;
+    border-radius: 0.8rem;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: all 0.2s;
+    font-family: 'Syne', sans-serif;
+    font-weight: 600;
+    font-size: 0.9rem;
+  }
+
+  .prog-nav-item:hover, .prog-nav-item.active {
+    background: var(--card-bg);
+    border-color: var(--border);
+  }
+
+  .prog-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .prog-details { display: none; }
+  .prog-details.active { display: block; }
+
+  .prog-header {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+    padding: 2rem;
+    border-radius: 1.5rem;
+    border: 1px solid var(--border);
+    background: var(--card-bg);
+  }
+
+  .prog-icon-big {
+    width: 80px; height: 80px;
+    border-radius: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+    flex-shrink: 0;
+  }
+
+  .prog-name {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 1.8rem;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+  }
+
+  .prog-fullname {
+    font-size: 0.9rem;
+    color: var(--muted);
+    margin-top: 0.25rem;
+  }
+
+  .prog-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 0.75rem;
+  }
+
+  .prog-chip {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    padding: 0.25rem 0.7rem;
+    border-radius: 0.5rem;
+    background: var(--cream);
+    color: var(--muted);
+  }
+
+  .prog-content-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+  }
+
+  .prog-info-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 1.2rem;
+    padding: 1.5rem;
+  }
+
+  .prog-info-card h4 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .prog-info-card ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .prog-info-card ul li {
+    font-size: 0.875rem;
+    color: var(--muted);
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    line-height: 1.5;
+  }
+
+  .prog-info-card ul li::before {
+    content: '→';
+    color: var(--accent);
+    flex-shrink: 0;
+    font-size: 0.8rem;
+    margin-top: 0.1rem;
+  }
+
+  /* ─── RESOURCES SECTION ─── */
+  #resources { background: var(--ink); color: var(--paper); }
+
+  #resources .section-sub { color: rgba(245,240,232,0.6); }
+
+  .resources-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1rem;
+  }
+
+  .resource-card {
+    background: rgba(245,240,232,0.05);
+    border: 1px solid rgba(245,240,232,0.1);
+    border-radius: 1.2rem;
+    padding: 1.5rem;
+    transition: all 0.2s;
+    cursor: pointer;
+  }
+
+  .resource-card:hover {
+    background: rgba(245,240,232,0.1);
+    transform: translateY(-3px);
+  }
+
+  .resource-type {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    color: var(--accent3);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+  }
+
+  .resource-card h4 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+    line-height: 1.3;
+  }
+
+  .resource-card p {
+    font-size: 0.83rem;
+    color: rgba(245,240,232,0.5);
+    line-height: 1.6;
+  }
+
+  .resource-arrow {
+    display: inline-block;
+    margin-top: 1rem;
+    font-size: 1.2rem;
+    transition: transform 0.2s;
+  }
+
+  .resource-card:hover .resource-arrow { transform: translate(4px, -4px); }
+
+  /* ─── SEMESTER TIMELINE ─── */
+  #curriculum { background: var(--cream); }
+
+  .curriculum-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .prog-select {
+    font-family: 'Syne', sans-serif;
+    font-weight: 600;
+    font-size: 0.9rem;
+    padding: 0.6rem 1.2rem;
+    border: 1.5px solid var(--border);
+    border-radius: 0.8rem;
+    background: var(--card-bg);
+    cursor: pointer;
+    color: var(--ink);
+    outline: none;
+  }
+
+  .sem-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 1rem;
+  }
+
+  .sem-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 1.2rem;
+    padding: 1.25rem;
+    position: relative;
+    transition: transform 0.2s;
+  }
+
+  .sem-card:hover { transform: translateY(-3px); }
+
+  .sem-number {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    margin-bottom: 0.75rem;
+  }
+
+  .sem-subjects {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .sem-subjects li {
+    font-size: 0.8rem;
+    color: var(--ink);
+    background: var(--cream);
+    padding: 0.35rem 0.7rem;
+    border-radius: 0.5rem;
+    line-height: 1.4;
+  }
+
+  /* ─── TESTIMONIALS ─── */
+  #testimonials { background: var(--paper); }
+
+  .testimonials-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .testimonial-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 1.5rem;
+    padding: 2rem;
+    position: relative;
+  }
+
+  .testimonial-card::before {
+    content: '"';
+    position: absolute;
+    top: 1rem;
+    right: 1.5rem;
+    font-family: 'Syne', sans-serif;
+    font-size: 5rem;
+    font-weight: 800;
+    color: var(--cream);
+    line-height: 1;
+  }
+
+  .testimonial-text {
+    font-size: 0.95rem;
+    line-height: 1.7;
+    color: var(--muted);
+    margin-bottom: 1.5rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  .testimonial-author {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .author-avatar {
+    width: 42px; height: 42px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    flex-shrink: 0;
+  }
+
+  .author-name {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 0.9rem;
+  }
+
+  .author-prog {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    color: var(--muted);
+    margin-top: 0.1rem;
+  }
+
+  /* ─── FAQ ─── */
+  #faq { background: var(--cream); }
+
+  .faq-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    max-width: 900px;
+  }
+
+  .faq-item {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 1rem;
+    overflow: hidden;
+    cursor: pointer;
+  }
+
+  .faq-q {
+    font-family: 'Syne', sans-serif;
+    font-weight: 600;
+    font-size: 0.92rem;
+    padding: 1.25rem 1.25rem 1.25rem 1.25rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.5rem;
+    user-select: none;
+  }
+
+  .faq-toggle {
+    width: 24px; height: 24px;
+    border-radius: 50%;
+    background: var(--cream);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    flex-shrink: 0;
+    transition: transform 0.3s;
+  }
+
+  .faq-item.open .faq-toggle { transform: rotate(45deg); background: var(--accent); color: white; }
+
+  .faq-a {
+    font-size: 0.85rem;
+    color: var(--muted);
+    line-height: 1.7;
+    padding: 0 1.25rem 0 1.25rem;
+    max-height: 0;
+    overflow: hidden;
+    transition: all 0.35s ease;
+  }
+
+  .faq-item.open .faq-a {
+    max-height: 200px;
+    padding-bottom: 1.25rem;
+  }
+
+  /* ─── CTA BANNER ─── */
+  .cta-banner {
+    background: var(--accent);
+    color: white;
+    padding: 5rem 3rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .cta-banner::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 30% 50%, rgba(255,255,255,0.15), transparent 60%),
+                radial-gradient(ellipse at 70% 50%, rgba(0,0,0,0.1), transparent 60%);
+  }
+
+  .cta-banner > * { position: relative; z-index: 1; }
+
+  .cta-banner h2 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    letter-spacing: -0.03em;
+    margin-bottom: 1rem;
+  }
+
+  .cta-banner p {
+    font-size: 1.1rem;
+    opacity: 0.85;
+    margin-bottom: 2rem;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.6;
+  }
+
+  .cta-banner .btn-white {
+    display: inline-block;
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    background: white;
+    color: var(--accent);
+    padding: 0.9rem 2.5rem;
+    border-radius: 3rem;
+    text-decoration: none;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+  }
+
+  .cta-banner .btn-white:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+  }
+
+  /* ─── FOOTER ─── */
+  footer {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 4rem 3rem 2rem;
+  }
+
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 3rem;
+    margin-bottom: 3rem;
+  }
+
+  .footer-brand p {
+    font-size: 0.9rem;
+    color: rgba(245,240,232,0.5);
+    line-height: 1.7;
+    margin-top: 0.75rem;
+    max-width: 280px;
+  }
+
+  .footer-col h5 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+    color: var(--paper);
+  }
+
+  .footer-col ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+
+  .footer-col ul a {
+    font-size: 0.85rem;
+    color: rgba(245,240,232,0.5);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .footer-col ul a:hover { color: var(--paper); }
+
+  .footer-bottom {
+    border-top: 1px solid rgba(245,240,232,0.1);
+    padding-top: 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.8rem;
+    color: rgba(245,240,232,0.4);
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  /* ─── ANIMATIONS ─── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 900px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { display: none; }
+    .hero { grid-template-columns: 1fr; padding: 6rem 1.5rem 3rem; }
+    .hero::after { display: none; }
+    section { padding: 3rem 1.5rem; }
+    .courses-grid { grid-template-columns: 1fr; }
+    .programs-layout { grid-template-columns: 1fr; }
+    .programs-nav { position: static; flex-direction: row; flex-wrap: wrap; }
+    .prog-content-grid { grid-template-columns: 1fr; }
+    .footer-grid { grid-template-columns: 1fr 1fr; }
+    .faq-grid { grid-template-columns: 1fr; }
+    .sem-grid { grid-template-columns: 1fr 1fr; }
+  }
+
+  @media (max-width: 480px) {
+    .footer-grid { grid-template-columns: 1fr; }
+    .stats-grid { grid-template-columns: 1fr 1fr; }
+    .stat-card.featured { grid-column: span 2; }
+  }
+
+  /* ─── MODAL ─── */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(13,13,13,0.7);
+    backdrop-filter: blur(8px);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+  }
+
+  .modal-overlay.open {
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  .modal {
+    background: var(--paper);
+    border-radius: 1.5rem;
+    padding: 2.5rem;
+    max-width: 600px;
+    width: 100%;
+    max-height: 85vh;
+    overflow-y: auto;
+    transform: translateY(20px) scale(0.97);
+    transition: transform 0.3s;
+  }
+
+  .modal-overlay.open .modal {
+    transform: translateY(0) scale(1);
+  }
+
+  .modal-close {
+    float: right;
+    background: var(--cream);
+    border: none;
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s;
+  }
+
+  .modal-close:hover { background: var(--accent); color: white; }
+
+  /* ─── SEARCH BAR ─── */
+  .search-bar {
+    max-width: 600px;
+    margin: 0 auto 3rem;
+    position: relative;
+  }
+
+  .search-bar input {
+    width: 100%;
+    padding: 1rem 1rem 1rem 3.5rem;
+    border: 2px solid var(--border);
+    border-radius: 3rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1rem;
+    background: var(--card-bg);
+    outline: none;
+    transition: border-color 0.2s;
+    color: var(--ink);
+  }
+
+  .search-bar input:focus { border-color: var(--accent2); }
+
+  .search-bar::before {
+    content: '🔍';
+    position: absolute;
+    left: 1.2rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.1rem;
+    pointer-events: none;
+  }
+
+  /* ─── MARQUEE ─── */
+  .marquee-wrap {
+    overflow: hidden;
+    background: var(--ink);
+    padding: 1rem 0;
+    border-top: 1px solid rgba(245,240,232,0.08);
+    border-bottom: 1px solid rgba(245,240,232,0.08);
+  }
+
+  .marquee-track {
+    display: flex;
+    gap: 3rem;
+    animation: marqueeMove 20s linear infinite;
+    white-space: nowrap;
+  }
+
+  @keyframes marqueeMove {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  .marquee-item {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 0.85rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(245,240,232,0.35);
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .marquee-item span {
+    color: var(--accent);
+    font-size: 0.5rem;
+  }
+</style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav>
+  <a href="#" class="nav-logo">Manish<span>Aryal</span></a>
+  <ul class="nav-links">
+    <li><a href="#courses">Courses</a></li>
+    <li><a href="#programs">Programs</a></li>
+    <li><a href="#curriculum">Curriculum</a></li>
+    <li><a href="#resources">Resources</a></li>
+    <li><a href="#faq">FAQ</a></li>
+  </ul>
+  <a href="#courses" class="nav-cta">Explore Programs</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-content">
+    <div class="hero-badge">🎓 Nepal's Bachelor Programs Hub</div>
+    <h1>Shape Your<br><span class="highlight">Future</span><br>Start Here.</h1>
+    <p>Explore BIM, BSc.CSIT, BIT, BCA, BBS, BBA & BEd programs. Comprehensive course guides, syllabi, and resources — all in one place for bachelor-level students across Nepal.</p>
+    <div class="hero-actions">
+      <a href="#courses" class="btn-primary">Browse Courses →</a>
+      <a href="#programs" class="btn-secondary">View Programs ↗</a>
+    </div>
+  </div>
+  <div class="hero-visual">
+    <div class="stats-grid">
+      <div class="stat-card featured">
+        <div>
+          <div class="stat-icon">🏛️</div>
+          <div class="stat-number">7+</div>
+          <div class="stat-label">Bachelor Programs Covered</div>
+        </div>
+        <div style="margin-left: auto; text-align: right;">
+          <div style="font-size: 0.75rem; color: rgba(245,240,232,0.4); font-family: 'JetBrains Mono', monospace; letter-spacing: 0.05em;">AFFILIATED TO</div>
+          <div style="font-family: 'Syne', sans-serif; font-weight: 700; margin-top: 0.25rem;">TU · PU · KU</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">📚</div>
+        <div class="stat-number" style="color: var(--accent2);">500+</div>
+        <div class="stat-label">Study Resources</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">🗓️</div>
+        <div class="stat-number" style="color: var(--accent3);">32</div>
+        <div class="stat-label">Semesters Covered</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">👨‍🎓</div>
+        <div class="stat-number" style="color: var(--gold);">10K+</div>
+        <div class="stat-label">Students Helped</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-wrap">
+  <div class="marquee-track" id="marqueeTrack"></div>
+</div>
+
+<!-- COURSES SECTION -->
+<section id="courses">
+  <div class="courses-header reveal">
+    <div>
+      <div class="section-tag">// all_programs</div>
+      <h2 class="section-title">Explore Bachelor<br>Programs</h2>
+    </div>
+    <div>
+      <div class="filter-tabs" id="filterTabs">
+        <button class="filter-tab active" data-filter="all">All Programs</button>
+        <button class="filter-tab" data-filter="tech">Technology</button>
+        <button class="filter-tab" data-filter="business">Business</button>
+        <button class="filter-tab" data-filter="education">Education</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="search-bar reveal">
+    <input type="text" id="courseSearch" placeholder="Search courses, subjects, or programs…" />
+  </div>
+
+  <div class="courses-grid" id="coursesGrid"></div>
+</section>
+
+<!-- PROGRAMS DEEP-DIVE -->
+<section id="programs">
+  <div class="section-tag reveal">// program_details</div>
+  <h2 class="section-title reveal">Program Deep Dive</h2>
+  <p class="section-sub reveal">Select a program to explore full details, career paths, and subject highlights.</p>
+  <div class="programs-layout">
+    <div class="programs-nav" id="programsNav"></div>
+    <div id="programsContent"></div>
+  </div>
+</section>
+
+<!-- CURRICULUM SECTION -->
+<section id="curriculum">
+  <div class="curriculum-header reveal">
+    <div>
+      <div class="section-tag">// semester_wise</div>
+      <h2 class="section-title">Semester Curriculum</h2>
+    </div>
+    <select class="prog-select" id="semSelect"></select>
+  </div>
+  <div class="sem-grid" id="semGrid"></div>
+</section>
+
+<!-- RESOURCES -->
+<section id="resources">
+  <div class="section-tag reveal" style="color: rgba(245,240,232,0.4);">// study_resources</div>
+  <h2 class="section-title reveal">Study Resources</h2>
+  <p class="section-sub reveal">Notes, past papers, question banks, and more — curated for bachelor students.</p>
+  <div class="resources-grid" id="resourcesGrid"></div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section id="testimonials">
+  <div class="section-tag reveal">// student_stories</div>
+  <h2 class="section-title reveal">Student Stories</h2>
+  <p class="section-sub reveal">Hear from students who used EduNepal to navigate their bachelor journey.</p>
+  <div class="testimonials-grid" id="testimonialsGrid"></div>
+</section>
+
+<!-- FAQ -->
+<section id="faq">
+  <div class="section-tag reveal">// frequently_asked</div>
+  <h2 class="section-title reveal">Common Questions</h2>
+  <p class="section-sub reveal">Everything you need to know about bachelor programs in Nepal.</p>
+  <div class="faq-grid" id="faqGrid"></div>
+</section>
+
+<!-- CTA -->
+<div class="cta-banner">
+  <h2>Ready to Begin Your<br>Bachelor Journey?</h2>
+  <p>Join thousands of students navigating Nepal's top bachelor programs with EduNepal.</p>
+  <a href="#courses" class="btn-white">Start Exploring →</a>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="nav-logo" style="font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.5rem;">Edu<span style="color: var(--accent);">Nepal</span></div>
+      <p>Comprehensive bachelor-level education resources for Nepali students. From BIM to BEd — we've got you covered.</p>
+    </div>
+    <div class="footer-col">
+      <h5>Programs</h5>
+      <ul>
+        <li><a href="#">BIM</a></li>
+        <li><a href="#">BSc.CSIT</a></li>
+        <li><a href="#">BIT</a></li>
+        <li><a href="#">BCA</a></li>
+        <li><a href="#">BBS / BBA</a></li>
+        <li><a href="#">BEd</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Resources</h5>
+      <ul>
+        <li><a href="#">Past Papers</a></li>
+        <li><a href="#">Notes & Guides</a></li>
+        <li><a href="#">Question Bank</a></li>
+        <li><a href="#">Project Ideas</a></li>
+        <li><a href="#">Career Guide</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Support</h5>
+      <ul>
+        <li><a href="#">About Us</a></li>
+        <li><a href="#">Contact</a></li>
+        <li><a href="#">Contribute</a></li>
+        <li><a href="#">Privacy Policy</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2025 EduNepal. Made with ❤️ for Nepali students.</span>
+    <span style="font-family: 'JetBrains Mono', monospace; font-size: 0.72rem;">TU · PU · KU · Pokhara University</span>
+  </div>
+</footer>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+  <div class="modal" id="modalContent"></div>
+</div>
+
+<script>
+// ─── DATA ───
+const programs = [
+  {
+    id: 'bim',
+    name: 'BIM',
+    fullname: 'Bachelor of Information Management',
+    icon: '💼',
+    color: '#e84d0e',
+    category: 'tech',
+    university: 'Tribhuvan University',
+    duration: '4 Years (8 Semesters)',
+    seats: '~30–60 per college',
+    affiliation: 'Faculty of Management, TU',
+    desc: 'A management-oriented IT program blending information systems, business strategy, and computer applications. Ideal for students aiming at IT management roles.',
+    subjects: ['Fundamentals of IT', 'Business Communication', 'Financial Accounting', 'C Programming', 'Database Management', 'E-Commerce', 'MIS', 'Project Management'],
+    careers: ['IT Manager', 'Business Analyst', 'System Analyst', 'Database Administrator', 'ERP Consultant', 'Entrepreneur'],
+    entrance: 'TU Entrance Exam (PCM/Biology background)',
+    tags: ['Management', 'IT', '4-Year', 'TU'],
+  },
+  {
+    id: 'csit',
+    name: 'BSc.CSIT',
+    fullname: 'Bachelor of Science in Computer Science & IT',
+    icon: '💻',
+    color: '#1a56e8',
+    category: 'tech',
+    university: 'Tribhuvan University',
+    duration: '4 Years (8 Semesters)',
+    seats: '~40–70 per college',
+    affiliation: 'Institute of Science & Technology, TU',
+    desc: 'A rigorous science-based CS program covering programming, algorithms, OS, networking, AI, and software engineering. One of the most competitive tech programs in Nepal.',
+    subjects: ['C Programming', 'Discrete Mathematics', 'Data Structures', 'Operating System', 'Computer Networks', 'AI', 'Software Engineering', 'Web Technology'],
+    careers: ['Software Developer', 'Data Scientist', 'AI Engineer', 'Network Engineer', 'Security Analyst', 'Cloud Architect'],
+    entrance: 'TU Entrance Exam (PCM mandatory)',
+    tags: ['Science', 'CS', '4-Year', 'TU'],
+  },
+  {
+    id: 'bit',
+    name: 'BIT',
+    fullname: 'Bachelor of Information Technology',
+    icon: '🖥️',
+    color: '#9b27af',
+    category: 'tech',
+    university: 'Purbanchal University / Pokhara University',
+    duration: '4 Years (8 Semesters)',
+    seats: '~30–50 per college',
+    affiliation: 'PU / Pokhara University',
+    desc: 'An application-oriented IT program with strong emphasis on practical skills, web development, networking, and software design. Industry-ready curriculum.',
+    subjects: ['Programming in C', 'Computer Organization', 'Web Technology', 'DBMS', 'Software Engineering', 'Networking', 'Mobile App Dev', 'Cloud Computing'],
+    careers: ['Web Developer', 'Mobile Developer', 'IT Consultant', 'Network Admin', 'System Designer', 'DevOps Engineer'],
+    entrance: 'University Entrance Exam (+2 Science/Management)',
+    tags: ['IT', 'Applied', '4-Year', 'PU'],
+  },
+  {
+    id: 'bca',
+    name: 'BCA',
+    fullname: 'Bachelor of Computer Application',
+    icon: '🖱️',
+    color: '#22b97a',
+    category: 'tech',
+    university: 'Tribhuvan University / Pokhara University',
+    duration: '4 Years (8 Semesters)',
+    seats: '~40–60 per college',
+    affiliation: 'TU / Pokhara University',
+    desc: 'A balanced program covering computer science fundamentals and business applications. A great entry point for aspiring developers and IT professionals.',
+    subjects: ['Introduction to IT', 'C Programming', 'Financial Accounting', 'Microeconomics', 'Data Structures', 'DBMS', 'Java Programming', 'Web Development'],
+    careers: ['Software Developer', 'Web Designer', 'IT Support', 'Database Operator', 'Application Developer', 'QA Engineer'],
+    entrance: 'TU Entrance Exam (+2 any stream accepted)',
+    tags: ['Computer', 'Application', '4-Year', 'TU'],
+  },
+  {
+    id: 'bbs',
+    name: 'BBS',
+    fullname: 'Bachelor of Business Studies',
+    icon: '📊',
+    color: '#d4a017',
+    category: 'business',
+    university: 'Tribhuvan University',
+    duration: '4 Years (Annual System)',
+    seats: '~100+ per college',
+    affiliation: 'Faculty of Management, TU',
+    desc: 'The most popular management program in Nepal. Covers accounting, finance, marketing, and HRM. Annual system with board exams. Wide career scope.',
+    subjects: ['Business Mathematics', 'Business English', 'Financial Accounting', 'Economics', 'Business Law', 'Marketing', 'Finance', 'HRM'],
+    careers: ['Accountant', 'Bank Officer', 'Marketing Manager', 'Financial Analyst', 'HR Manager', 'Entrepreneur'],
+    entrance: 'TU Entrance Exam (+2 any stream)',
+    tags: ['Business', 'Management', '4-Year', 'TU'],
+  },
+  {
+    id: 'bba',
+    name: 'BBA',
+    fullname: 'Bachelor of Business Administration',
+    icon: '🏢',
+    color: '#e84d7e',
+    category: 'business',
+    university: 'Pokhara University / Kathmandu University',
+    duration: '4 Years (8 Semesters)',
+    seats: '~40–60 per college',
+    affiliation: 'PU / KU',
+    desc: 'A semester-based management program with global curriculum standards. Focus on leadership, strategy, operations, and international business.',
+    subjects: ['Business Communication', 'Microeconomics', 'Accounting', 'Statistics', 'Organizational Behavior', 'Operations Mgmt', 'Strategic Mgmt', 'International Business'],
+    careers: ['Business Manager', 'Operations Head', 'Marketing Director', 'Finance Manager', 'Startup Founder', 'Management Consultant'],
+    entrance: 'University Entrance (PU/KU) (+2 any stream)',
+    tags: ['Administration', 'Semester', '4-Year', 'PU/KU'],
+  },
+  {
+    id: 'bed',
+    name: 'BEd',
+    fullname: 'Bachelor of Education',
+    icon: '🎓',
+    color: '#0ea5e9',
+    category: 'education',
+    university: 'Tribhuvan University',
+    duration: '4 Years (Annual/Semester)',
+    seats: '~50–80 per college',
+    affiliation: 'Faculty of Education, TU',
+    desc: 'Nepal\'s primary teacher training program. Combines subject specialization with pedagogy, educational psychology, and teaching practice.',
+    subjects: ['Educational Psychology', 'Philosophy of Education', 'Teaching Methods', 'Child Development', 'Curriculum Planning', 'Evaluation & Testing', 'ICT in Education', 'School Practicum'],
+    careers: ['School Teacher', 'Lecturer', 'Education Officer', 'Curriculum Developer', 'Educational Researcher', 'NGO Education Specialist'],
+    entrance: 'TU Entrance Exam (+2 any stream)',
+    tags: ['Education', 'Teaching', '4-Year', 'TU'],
+  },
+];
+
+const semesterData = {
+  bim: [
+    { sem: 'Semester I', subjects: ['Fundamentals of IT', 'Business English', 'Mathematics I', 'Financial Accounting I', 'Microeconomics'] },
+    { sem: 'Semester II', subjects: ['C Programming', 'Business Communication', 'Statistics I', 'Financial Accounting II', 'Macroeconomics'] },
+    { sem: 'Semester III', subjects: ['Data Structures', 'Database Management', 'Business Statistics', 'Cost Accounting', 'Organizational Behavior'] },
+    { sem: 'Semester IV', subjects: ['System Analysis & Design', 'Computer Networking', 'Operations Research', 'Management Accounting', 'Business Law'] },
+    { sem: 'Semester V', subjects: ['MIS', 'E-Commerce', 'Financial Management', 'Marketing Management', 'HRM'] },
+    { sem: 'Semester VI', subjects: ['ERP Systems', 'Information Security', 'Project Management', 'Auditing', 'Business Ethics'] },
+    { sem: 'Semester VII', subjects: ['Strategic Management', 'IT Governance', 'Entrepreneurship', 'Advanced DBMS', 'Elective I'] },
+    { sem: 'Semester VIII', subjects: ['Project Work', 'Internship Report', 'Research Methodology', 'Elective II', 'Comprehensive Viva'] },
+  ],
+  csit: [
+    { sem: 'Semester I', subjects: ['C Programming', 'Discrete Math', 'Physics', 'English', 'Digital Logic'] },
+    { sem: 'Semester II', subjects: ['OOP with C++', 'Numerical Methods', 'Statistics I', 'Computer Architecture', 'Microprocessors'] },
+    { sem: 'Semester III', subjects: ['Data Structures', 'Algorithm Analysis', 'OS', 'Database Systems', 'Statistics II'] },
+    { sem: 'Semester IV', subjects: ['Computer Networks', 'Software Engineering', 'Theory of Computation', 'System Programming', 'Applied Math'] },
+    { sem: 'Semester V', subjects: ['Web Technology', 'Compiler Design', 'AI', 'Simulation', 'Elective I'] },
+    { sem: 'Semester VI', subjects: ['Distributed Systems', 'Cryptography', 'Image Processing', 'Mobile Computing', 'Elective II'] },
+    { sem: 'Semester VII', subjects: ['Machine Learning', 'Cloud Computing', 'Bioinformatics', 'Research Methods', 'Elective III'] },
+    { sem: 'Semester VIII', subjects: ['Major Project', 'Project Defense', 'Industrial Training', 'Elective IV', 'Comprehensive Viva'] },
+  ],
+  bca: [
+    { sem: 'Semester I', subjects: ['Intro to IT', 'C Programming', 'Financial Accounting', 'English', 'Math I'] },
+    { sem: 'Semester II', subjects: ['Digital Logic', 'C++ OOP', 'Economics', 'Statistics', 'Business Math'] },
+    { sem: 'Semester III', subjects: ['Data Structures', 'DBMS', 'Microprocessors', 'Financial Mgmt', 'OS'] },
+    { sem: 'Semester IV', subjects: ['Networks', 'Java', 'Web Technology', 'Software Engineering', 'Statistics II'] },
+    { sem: 'Semester V', subjects: ['Advanced Java', 'PHP & MySQL', 'Android Dev', 'HRM', 'Elective I'] },
+    { sem: 'Semester VI', subjects: ['AI Basics', '.NET Framework', 'E-Commerce', 'Research Methods', 'Elective II'] },
+    { sem: 'Semester VII', subjects: ['Project Work I', 'Cloud Basics', 'Cybersecurity', 'Internship', 'Elective III'] },
+    { sem: 'Semester VIII', subjects: ['Major Project', 'Viva Voce', 'Elective IV', 'Industry Report', 'Capstone Defense'] },
+  ],
+};
+
+const resources = [
+  { type: 'Notes & Slides', title: 'BSc.CSIT Complete Notes — All Semesters', desc: 'Chapter-wise notes covering all 8 semesters of CSIT curriculum.', icon: '📓' },
+  { type: 'Past Papers', title: 'TU Old Question Papers 2018–2024', desc: '10 years of past examination papers with solutions for all major programs.', icon: '📄' },
+  { type: 'Project Ideas', title: 'BIM/BCA Final Year Project Repo', desc: 'Over 200 curated project topics with references and implementation hints.', icon: '💡' },
+  { type: 'Video Lectures', title: 'BBS Finance & Accounting Masterclass', desc: 'Recorded video lectures covering the full BBS Finance syllabus.', icon: '🎥' },
+  { type: 'Question Bank', title: 'BBA Model Questions & Answers', desc: 'Model question sets for all BBA semesters under PU and KU.', icon: '❓' },
+  { type: 'Career Guide', title: 'After Bachelor: Career Pathways 2025', desc: 'Comprehensive guide to graduate school, jobs, and opportunities post-bachelor.', icon: '🗺️' },
+  { type: 'Lab Manual', title: 'BIT Practical Lab Manual — Networking', desc: 'Step-by-step lab exercises for Computer Networking practicals.', icon: '🔧' },
+  { type: 'Syllabus', title: 'BEd Complete Syllabus 2024 (TU)', desc: 'Latest updated TU BEd syllabus with electives and practicum schedule.', icon: '📋' },
+];
+
+const testimonials = [
+  { text: 'EduNepal\'s semester-wise curriculum breakdown saved me so much confusion in my first year of CSIT. I knew exactly what was coming in each semester.', name: 'Aarav Shrestha', prog: 'BSc.CSIT, 3rd Year — Kathmandu', avatar: '👨‍💻', color: '#1a56e8' },
+  { text: 'The BBS resources here are genuinely the best I\'ve found in Nepali. Old question papers and notes all in one place — total game changer for exam prep.', name: 'Sujata Rai', prog: 'BBS, 2nd Year — Pokhara', avatar: '👩‍🎓', color: '#d4a017' },
+  { text: 'I was confused between BIM and BCA. The program comparison feature helped me understand both deeply and make a confident decision. Chose BIM and loving it!', name: 'Pranil Tamang', prog: 'BIM, 1st Year — Lalitpur', avatar: '🧑‍💼', color: '#e84d0e' },
+  { text: 'As a BEd student, this site has incredible resources. The pedagogy notes and past papers for TU are so well organized. My classmates all use it now.', name: 'Kabita Gurung', prog: 'BEd, 4th Year — Butwal', avatar: '👩‍🏫', color: '#0ea5e9' },
+  { text: 'The BBA subject guides helped me understand complex strategy concepts. The career guide was particularly insightful for planning after graduation.', name: 'Roshan K.C.', prog: 'BBA, 2nd Year — Chitwan', avatar: '👨‍💼', color: '#e84d7e' },
+  { text: 'I used EduNepal for my BIT final year project ideas. Found an amazing project topic that my supervisor loved. Highly recommend the project repository!', name: 'Anish Poudel', prog: 'BIT, 4th Year — Biratnagar', avatar: '🧑‍💻', color: '#9b27af' },
+];
+
+const faqs = [
+  { q: 'What is the difference between BIM and BCA?', a: 'BIM is management-oriented (Faculty of Management, TU) blending IT and business. BCA is more technical, under Science/Tech faculty, with deeper programming focus. BIM suits those who prefer IT + management; BCA is for those who want more coding.' },
+  { q: 'Which program has the best job prospects?', a: 'BSc.CSIT has the highest demand in Nepal\'s tech sector. BIM, BCA, and BIT also have strong placement. BBS and BBA are best for finance and management careers. BEd is ideal for teaching and education sector jobs.' },
+  { q: 'Is +2 Science compulsory for BSc.CSIT?', a: 'Yes, BSc.CSIT (TU) requires +2 with Physics, Chemistry, and Mathematics. BIM and BCA also require PCM backgrounds. BBS, BBA, and BEd accept students from any +2 stream.' },
+  { q: 'What is the duration of these programs?', a: 'All listed programs are 4-year bachelor degrees. BSc.CSIT, BIM, BCA, BIT, BBA, and BEd follow semester systems (8 semesters). BBS under TU traditionally follows the annual system.' },
+  { q: 'Can I switch from BBS to BBA?', a: 'Generally, switching between enrolled programs mid-stream is difficult. You would typically need to complete or leave one and apply fresh to another. Some credits may be transferable depending on the university policy.' },
+  { q: 'Which university is best for these programs?', a: 'TU has the largest network. KU (Kathmandu University) and PU (Pokhara University) offer smaller, more focused programs with semester systems. Choose based on program quality, fees, and location.' },
+  { q: 'Are there entrance exams for all programs?', a: 'Most programs require university entrance exams. TU has its own entrance exams per faculty. PU, KU, and Pokhara University hold separate entrance tests. Check individual university websites for current schedules.' },
+  { q: 'What is the fee range for these bachelor programs?', a: 'Government-affiliated colleges under TU are cheaper (NPR 10,000–40,000/year). Private colleges can range from NPR 1–3 lakhs per year. BBA at KU-affiliated colleges tends to be the most expensive.' },
+];
+
+// ─── RENDER COURSES ───
+function renderCourses(filter = 'all', search = '') {
+  const grid = document.getElementById('coursesGrid');
+  const filtered = programs.filter(p => {
+    const matchFilter = filter === 'all' || p.category === filter;
+    const matchSearch = search === '' || 
+      p.name.toLowerCase().includes(search) ||
+      p.fullname.toLowerCase().includes(search) ||
+      p.subjects.some(s => s.toLowerCase().includes(search));
+    return matchFilter && matchSearch;
+  });
+
+  grid.innerHTML = filtered.map(p => `
+    <div class="course-card reveal" onclick="openCourseModal('${p.id}')">
+      <div class="course-banner" style="background: linear-gradient(135deg, ${p.color}22, ${p.color}44);">
+        <div class="course-banner-icon">${p.icon}</div>
+      </div>
+      <div class="course-body">
+        <div class="course-program-tag" style="background: ${p.color}18; color: ${p.color};">${p.name}</div>
+        <div class="course-title">${p.fullname}</div>
+        <div class="course-desc">${p.desc}</div>
+        <div class="course-meta">
+          <span>⏱️ ${p.duration}</span>
+          <span>🏛️ ${p.university.split('/')[0].trim()}</span>
+          <span>👥 ${p.seats}</span>
+        </div>
+      </div>
+      <div class="course-footer">
+        <span class="difficulty-badge">${p.tags[0]}</span>
+        <a class="course-btn" style="color: ${p.color}; border-color: ${p.color}18; background: ${p.color}0a;" href="#">View Details →</a>
+      </div>
+    </div>
+  `).join('');
+
+  // re-trigger reveals
+  setTimeout(() => observeReveal(), 50);
+}
+
+// ─── RENDER PROGRAMS NAV ───
+function renderProgramsSection() {
+  const nav = document.getElementById('programsNav');
+  const content = document.getElementById('programsContent');
+
+  nav.innerHTML = programs.map((p, i) => `
+    <div class="prog-nav-item ${i === 0 ? 'active' : ''}" data-prog="${p.id}" onclick="switchProgram('${p.id}')">
+      <div class="prog-dot" style="background: ${p.color};"></div>
+      ${p.name}
+    </div>
+  `).join('');
+
+  content.innerHTML = programs.map((p, i) => `
+    <div class="prog-details ${i === 0 ? 'active' : ''}" id="prog-${p.id}">
+      <div class="prog-header">
+        <div class="prog-icon-big" style="background: ${p.color}18;">${p.icon}</div>
+        <div>
+          <div class="prog-name" style="color: ${p.color}">${p.name}</div>
+          <div class="prog-fullname">${p.fullname}</div>
+          <div class="prog-chips">
+            ${p.tags.map(t => `<span class="prog-chip">${t}</span>`).join('')}
+          </div>
+        </div>
+      </div>
+      <div class="prog-content-grid">
+        <div class="prog-info-card">
+          <h4>📚 Key Subjects</h4>
+          <ul>${p.subjects.map(s => `<li>${s}</li>`).join('')}</ul>
+        </div>
+        <div class="prog-info-card">
+          <h4>💼 Career Paths</h4>
+          <ul>${p.careers.map(c => `<li>${c}</li>`).join('')}</ul>
+        </div>
+        <div class="prog-info-card">
+          <h4>ℹ️ Program Info</h4>
+          <ul>
+            <li>Duration: ${p.duration}</li>
+            <li>University: ${p.university}</li>
+            <li>Affiliation: ${p.affiliation}</li>
+            <li>Seats: ${p.seats}</li>
+          </ul>
+        </div>
+        <div class="prog-info-card">
+          <h4>🎯 Admission</h4>
+          <ul>
+            <li>${p.entrance}</li>
+            <li>Entrance exam required</li>
+            <li>Check university website for schedule</li>
+            <li>Merit-based admission</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function switchProgram(id) {
+  document.querySelectorAll('.prog-nav-item').forEach(el => el.classList.toggle('active', el.dataset.prog === id));
+  document.querySelectorAll('.prog-details').forEach(el => el.classList.toggle('active', el.id === `prog-${id}`));
+}
+
+// ─── RENDER CURRICULUM ───
+function renderCurriculum(progId) {
+  const grid = document.getElementById('semGrid');
+  const data = semesterData[progId] || semesterData['csit'];
+  grid.innerHTML = data.map(s => `
+    <div class="sem-card reveal">
+      <div class="sem-number">${s.sem.toUpperCase()}</div>
+      <ul class="sem-subjects">${s.subjects.map(sub => `<li>${sub}</li>`).join('')}</ul>
+    </div>
+  `).join('');
+  setTimeout(() => observeReveal(), 50);
+}
+
+function populateSemSelect() {
+  const select = document.getElementById('semSelect');
+  const available = [
+    { id: 'csit', label: 'BSc.CSIT' },
+    { id: 'bim', label: 'BIM' },
+    { id: 'bca', label: 'BCA' },
+  ];
+  select.innerHTML = available.map(p => `<option value="${p.id}">${p.label}</option>`).join('');
+  select.addEventListener('change', e => renderCurriculum(e.target.value));
+}
+
+// ─── RENDER RESOURCES ───
+function renderResources() {
+  const grid = document.getElementById('resourcesGrid');
+  grid.innerHTML = resources.map(r => `
+    <div class="resource-card reveal">
+      <div class="resource-type">${r.type}</div>
+      <h4>${r.icon} ${r.title}</h4>
+      <p>${r.desc}</p>
+      <div class="resource-arrow">↗</div>
+    </div>
+  `).join('');
+}
+
+// ─── RENDER TESTIMONIALS ───
+function renderTestimonials() {
+  const grid = document.getElementById('testimonialsGrid');
+  grid.innerHTML = testimonials.map(t => `
+    <div class="testimonial-card reveal">
+      <p class="testimonial-text">${t.text}</p>
+      <div class="testimonial-author">
+        <div class="author-avatar" style="background: ${t.color}18;">${t.avatar}</div>
+        <div>
+          <div class="author-name">${t.name}</div>
+          <div class="author-prog">${t.prog}</div>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+// ─── RENDER FAQs ───
+function renderFAQ() {
+  const grid = document.getElementById('faqGrid');
+  grid.innerHTML = faqs.map((f, i) => `
+    <div class="faq-item reveal" onclick="toggleFAQ(this)">
+      <div class="faq-q">${f.q}<div class="faq-toggle">+</div></div>
+      <div class="faq-a">${f.a}</div>
+    </div>
+  `).join('');
+}
+
+function toggleFAQ(el) {
+  el.classList.toggle('open');
+}
+
+// ─── MARQUEE ───
+function buildMarquee() {
+  const items = programs.map(p => p.name);
+  const track = document.getElementById('marqueeTrack');
+  const repeated = [...items, ...items, ...items, ...items];
+  track.innerHTML = repeated.map(name => `<div class="marquee-item">${name}<span>◆</span></div>`).join('');
+}
+
+// ─── MODAL ───
+function openCourseModal(id) {
+  const p = programs.find(x => x.id === id);
+  if (!p) return;
+  const modal = document.getElementById('modalContent');
+  modal.innerHTML = `
+    <div style="display:flex; justify-content:flex-end; margin-bottom:1rem;">
+      <button class="modal-close" onclick="document.getElementById('modalOverlay').classList.remove('open')">✕</button>
+    </div>
+    <div style="display:flex; align-items:center; gap:1rem; margin-bottom:1.5rem;">
+      <div style="width:64px;height:64px;border-radius:1rem;background:${p.color}18;display:flex;align-items:center;justify-content:center;font-size:2rem;flex-shrink:0;">${p.icon}</div>
+      <div>
+        <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:1.5rem;color:${p.color};">${p.name}</div>
+        <div style="font-size:0.85rem;color:var(--muted);">${p.fullname}</div>
+      </div>
+    </div>
+    <p style="font-size:0.92rem;color:var(--muted);line-height:1.7;margin-bottom:1.5rem;">${p.desc}</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;">
+      <div style="background:var(--cream);border-radius:1rem;padding:1.25rem;">
+        <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:0.9rem;margin-bottom:0.75rem;">📚 Core Subjects</div>
+        <ul style="list-style:none;font-size:0.8rem;color:var(--muted);display:flex;flex-direction:column;gap:0.35rem;">
+          ${p.subjects.map(s => `<li>→ ${s}</li>`).join('')}
+        </ul>
+      </div>
+      <div style="background:var(--cream);border-radius:1rem;padding:1.25rem;">
+        <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:0.9rem;margin-bottom:0.75rem;">💼 Career Paths</div>
+        <ul style="list-style:none;font-size:0.8rem;color:var(--muted);display:flex;flex-direction:column;gap:0.35rem;">
+          ${p.careers.map(c => `<li>→ ${c}</li>`).join('')}
+        </ul>
+      </div>
+    </div>
+    <div style="margin-top:1rem;background:var(--cream);border-radius:1rem;padding:1.25rem;font-size:0.82rem;color:var(--muted);">
+      <strong style="color:var(--ink);">🎯 Admission:</strong> ${p.entrance}<br>
+      <strong style="color:var(--ink);">⏱️ Duration:</strong> ${p.duration}<br>
+      <strong style="color:var(--ink);">🏛️ University:</strong> ${p.university}
+    </div>
+  `;
+  document.getElementById('modalOverlay').classList.add('open');
+}
+
+function closeModal(e) {
+  if (e.target === document.getElementById('modalOverlay')) {
+    document.getElementById('modalOverlay').classList.remove('open');
+  }
+}
+
+// ─── FILTER TABS ───
+document.addEventListener('click', e => {
+  if (e.target.classList.contains('filter-tab')) {
+    document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+    e.target.classList.add('active');
+    renderCourses(e.target.dataset.filter, document.getElementById('courseSearch').value.toLowerCase());
+  }
+});
+
+// ─── SEARCH ───
+document.addEventListener('input', e => {
+  if (e.target.id === 'courseSearch') {
+    const activeFilter = document.querySelector('.filter-tab.active')?.dataset.filter || 'all';
+    renderCourses(activeFilter, e.target.value.toLowerCase());
+  }
+});
+
+// ─── SCROLL REVEAL ───
+function observeReveal() {
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.08 });
+
+  document.querySelectorAll('.reveal:not(.visible)').forEach(el => observer.observe(el));
+}
+
+// ─── INIT ───
+buildMarquee();
+renderCourses();
+renderProgramsSection();
+populateSemSelect();
+renderCurriculum('csit');
+renderResources();
+renderTestimonials();
+renderFAQ();
+observeReveal();
+</script>
+</body>
+</html>
