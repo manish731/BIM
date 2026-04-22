@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>EduNepal — Student Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --ink: #0d0d0d; --paper: #f5f0e8; --cream: #ede8d8;
+    --accent: #e84d0e; --accent2: #1a56e8; --green: #22b97a;
+    --gold: #d4a017; --muted: #7a7265; --border: rgba(13,13,13,0.1);
+    --sidebar-w: 260px;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--ink); display: flex; min-height: 100vh; }
+
+  /* SIDEBAR */
+  .sidebar {
+    width: var(--sidebar-w); background: var(--ink); color: var(--paper);
+    display: flex; flex-direction: column; position: fixed; inset: 0 auto 0 0;
+    padding: 1.5rem 0; z-index: 50; transition: transform 0.3s;
+  }
+  .sidebar-logo {
+    font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.35rem;
+    letter-spacing: -0.03em; padding: 0 1.5rem 1.5rem;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    color: var(--paper); text-decoration: none; display: block;
+  }
+  .sidebar-logo span { color: var(--accent); }
+  .sidebar-user {
+    display: flex; align-items: center; gap: 0.75rem;
+    padding: 1.25rem 1.5rem; border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  .user-avatar {
+    width: 40px; height: 40px; border-radius: 50%; background: var(--accent);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1rem;
+    color: white; flex-shrink: 0; overflow: hidden;
+  }
+  .user-avatar img { width: 100%; height: 100%; object-fit: cover; }
+  .user-name { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.9rem; }
+  .user-prog {
+    font-family: 'JetBrains Mono', monospace; font-size: 0.65rem;
+    color: rgba(245,240,232,0.4); margin-top: 0.15rem;
+  }
+  .sidebar-nav { flex: 1; padding: 1rem 0; }
+  .nav-section {
+    font-family: 'JetBrains Mono', monospace; font-size: 0.6rem;
+    letter-spacing: 0.12em; color: rgba(245,240,232,0.25);
+    padding: 0.75rem 1.5rem 0.4rem; text-transform: uppercase;
+  }
+  .nav-item {
+    display: flex; align-items: center; gap: 0.75rem;
+    padding: 0.7rem 1.5rem; font-size: 0.875rem; color: rgba(245,240,232,0.55);
+    cursor: pointer; transition: all 0.2s; text-decoration: none;
+    border-left: 3px solid transparent;
+  }
+  .nav-item:hover { color: var(--paper); background: rgba(255,255,255,0.04); }
+  .nav-item.active { color: var(--paper); background: rgba(232,77,14,0.1); border-left-color: var(--accent); }
+  .nav-item .icon { font-size: 1rem; width: 20px; text-align: center; }
+  .sidebar-bottom { padding: 1rem 0; border-top: 1px solid rgba(255,255,255,0.08); }
+
+  /* MAIN */
+  .main { margin-left: var(--sidebar-w); flex: 1; padding: 2rem; }
+  .topbar {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;
+  }
+  .topbar h1 {
+    font-family: 'Syne', sans-serif; font-weight: 800;
+    font-size: 1.6rem; letter-spacing: -0.03em;
+  }
+  .topbar-right { display: flex; align-items: center; gap: 1rem; }
+  .notif-btn {
+    width: 40px; height: 40px; border-radius: 50%; background: white;
+    border: 1px solid var(--border); display: flex; align-items: center;
+    justify-content: center; cursor: pointer; font-size: 1.1rem;
+    transition: all 0.2s; position: relative;
+  }
+  .notif-btn:hover { background: var(--cream); }
+  .notif-badge {
+    position: absolute; top: 4px; right: 4px; width: 8px; height: 8px;
+    background: var(--accent); border-radius: 50%; border: 2px solid white;
+  }
+
+  /* STATS ROW */
+  .stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 2rem; }
+  .stat-card {
+    background: white; border: 1px solid var(--border); border-radius: 1rem;
+    padding: 1.25rem; transition: transform 0.2s;
+  }
+  .stat-card:hover { transform: translateY(-2px); }
+  .stat-icon { font-size: 1.5rem; margin-bottom: 0.5rem; }
+  .stat-val {
+    font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.8rem;
+    letter-spacing: -0.03em; line-height: 1;
+  }
+  .stat-lbl { font-size: 0.78rem; color: var(--muted); margin-top: 0.25rem; }
+
+  /* GRID */
+  .dash-grid { display: grid; grid-template-columns: 1fr 380px; gap: 1.5rem; }
+
+  /* NOTES TABLE */
+  .card {
+    background: white; border: 1px solid var(--border);
+    border-radius: 1.2rem; overflow: hidden;
+  }
+  .card-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.25rem 1.5rem; border-bottom: 1px solid var(--border);
+  }
+  .card-header h3 {
+    font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1rem;
+  }
+  .card-tag {
+    font-family: 'JetBrains Mono', monospace; font-size: 0.65rem;
+    letter-spacing: 0.08em; color: var(--muted);
+  }
+  .notes-list { padding: 0.5rem; }
+  .note-row {
+    display: flex; align-items: center; gap: 0.75rem;
+    padding: 0.75rem 1rem; border-radius: 0.75rem;
+    transition: background 0.2s; cursor: pointer;
+  }
+  .note-row:hover { background: var(--cream); }
+  .note-icon {
+    width: 36px; height: 36px; border-radius: 0.6rem;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.1rem; flex-shrink: 0;
+  }
+  .note-title { font-size: 0.875rem; font-weight: 500; line-height: 1.3; }
+  .note-meta { font-size: 0.72rem; color: var(--muted); margin-top: 0.15rem; }
+  .note-download {
+    margin-left: auto; font-size: 0.78rem; color: var(--accent2);
+    font-family: 'Syne', sans-serif; font-weight: 600; flex-shrink: 0;
+    padding: 0.3rem 0.75rem; border-radius: 0.4rem;
+    background: rgba(26,86,232,0.06); transition: background 0.2s;
+  }
+  .note-download:hover { background: rgba(26,86,232,0.12); }
+  .empty-state {
+    padding: 2.5rem; text-align: center;
+    color: var(--muted); font-size: 0.88rem;
+  }
+  .empty-state div { font-size: 2rem; margin-bottom: 0.5rem; }
+
+  /* RIGHT COLUMN */
+  .right-col { display: flex; flex-direction: column; gap: 1.5rem; }
+
+  /* PROFILE CARD */
+  .profile-card {
+    background: var(--ink); color: var(--paper);
+    border-radius: 1.2rem; padding: 1.5rem;
+  }
+  .profile-avatar-big {
+    width: 64px; height: 64px; border-radius: 50%;
+    background: var(--accent); display: flex; align-items: center;
+    justify-content: center; font-family: 'Syne', sans-serif;
+    font-weight: 800; font-size: 1.5rem; color: white;
+    margin-bottom: 1rem; overflow: hidden;
+  }
+  .profile-avatar-big img { width: 100%; height: 100%; object-fit: cover; }
+  .profile-name {
+    font-family: 'Syne', sans-serif; font-weight: 800;
+    font-size: 1.2rem; letter-spacing: -0.02em;
+  }
+  .profile-prog {
+    font-family: 'JetBrains Mono', monospace; font-size: 0.7rem;
+    color: var(--accent); margin-top: 0.2rem;
+  }
+  .profile-info { margin-top: 1rem; display: flex; flex-direction: column; gap: 0.4rem; }
+  .profile-info-row {
+    display: flex; justify-content: space-between; font-size: 0.82rem;
+    color: rgba(245,240,232,0.5);
+  }
+  .profile-info-row span:last-child { color: var(--paper); font-weight: 500; }
+  .edit-profile-btn {
+    display: block; width: 100%; margin-top: 1.25rem;
+    padding: 0.65rem; background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.12); border-radius: 0.6rem;
+    color: var(--paper); font-family: 'Syne', sans-serif; font-weight: 600;
+    font-size: 0.85rem; cursor: pointer; text-align: center;
+    transition: background 0.2s;
+  }
+  .edit-profile-btn:hover { background: rgba(255,255,255,0.12); }
+
+  /* ANNOUNCEMENTS */
+  .announcement-list { padding: 0.5rem; }
+  .announcement-item {
+    padding: 0.9rem 1rem; border-radius: 0.75rem;
+    border-left: 3px solid var(--accent);
+    background: rgba(232,77,14,0.04);
+    margin-bottom: 0.5rem;
+  }
+  .announcement-title { font-size: 0.875rem; font-weight: 500; margin-bottom: 0.25rem; }
+  .announcement-date { font-family: 'JetBrains Mono', monospace; font-size: 0.65rem; color: var(--muted); }
+
+  /* LOADING */
+  .loading-skeleton {
+    background: linear-gradient(90deg, var(--cream) 25%, #e8e3d5 50%, var(--cream) 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+    border-radius: 0.5rem;
+    height: 48px; margin-bottom: 0.5rem;
+  }
+  @keyframes shimmer { to { background-position: -200% 0; } }
+
+  @media (max-width: 900px) {
+    .sidebar { transform: translateX(-100%); }
+    .main { margin-left: 0; }
+    .stats-row { grid-template-columns: 1fr 1fr; }
+    .dash-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <a href="index.html" class="sidebar-logo">Edu<span>Nepal</span></a>
+  <div class="sidebar-user">
+    <div class="user-avatar" id="sideAvatar">?</div>
+    <div>
+      <div class="user-name" id="sideName">Loading…</div>
+      <div class="user-prog" id="sideProg">—</div>
+    </div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-section">Main</div>
+    <a class="nav-item active" href="dashboard.html"><span class="icon">🏠</span> Dashboard</a>
+    <a class="nav-item" href="index.html"><span class="icon">📚</span> Browse Courses</a>
+    <div class="nav-section">Resources</div>
+    <a class="nav-item" href="#" id="navNotes"><span class="icon">📄</span> My Notes</a>
+    <a class="nav-item" href="#" id="navPapers"><span class="icon">📝</span> Past Papers</a>
+    <a class="nav-item" href="contact.html"><span class="icon">💬</span> Contact / Inquiry</a>
+    <div class="nav-section">Account</div>
+    <a class="nav-item" href="#"><span class="icon">⚙️</span> Settings</a>
+  </nav>
+  <div class="sidebar-bottom">
+    <a class="nav-item" href="#" onclick="logoutUser()"><span class="icon">🚪</span> Sign Out</a>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<main class="main">
+  <div class="topbar">
+    <div>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:0.7rem;color:var(--muted);margin-bottom:0.25rem;" id="greetTime">Good morning</div>
+      <h1 id="dashGreet">Welcome back!</h1>
+    </div>
+    <div class="topbar-right">
+      <div class="notif-btn">🔔<div class="notif-badge"></div></div>
+    </div>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-icon">📥</div>
+      <div class="stat-val" id="statDownloads">0</div>
+      <div class="stat-lbl">Notes Downloaded</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">📋</div>
+      <div class="stat-val" id="statInquiries">0</div>
+      <div class="stat-lbl">Inquiries Sent</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">📅</div>
+      <div class="stat-val" id="statSem">—</div>
+      <div class="stat-lbl">Current Semester</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">🎓</div>
+      <div class="stat-val" id="statProg" style="font-size:1.2rem;">—</div>
+      <div class="stat-lbl">Enrolled Program</div>
+    </div>
+  </div>
+
+  <!-- GRID -->
+  <div class="dash-grid">
+    <!-- LEFT -->
+    <div style="display:flex;flex-direction:column;gap:1.5rem;">
+      <!-- NOTES -->
+      <div class="card">
+        <div class="card-header">
+          <h3>📄 Available Notes & Resources</h3>
+          <span class="card-tag" id="notesCount">Loading…</span>
+        </div>
+        <div class="notes-list" id="notesList">
+          <div class="loading-skeleton"></div>
+          <div class="loading-skeleton"></div>
+          <div class="loading-skeleton"></div>
+        </div>
+      </div>
+      <!-- ANNOUNCEMENTS -->
+      <div class="card">
+        <div class="card-header">
+          <h3>📢 Announcements</h3>
+          <span class="card-tag">LATEST</span>
+        </div>
+        <div class="announcement-list" id="announceList">
+          <div class="loading-skeleton"></div>
+          <div class="loading-skeleton"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT -->
+    <div class="right-col">
+      <div class="profile-card">
+        <div class="profile-avatar-big" id="profileAvatar">?</div>
+        <div class="profile-name" id="profileName">—</div>
+        <div class="profile-prog" id="profileProg">—</div>
+        <div class="profile-info">
+          <div class="profile-info-row"><span>Email</span><span id="profileEmail">—</span></div>
+          <div class="profile-info-row"><span>Semester</span><span id="profileSem">—</span></div>
+          <div class="profile-info-row"><span>College</span><span id="profileCollege">—</span></div>
+        </div>
+        <button class="edit-profile-btn" onclick="window.location.href='contact.html'">✉️ Send Inquiry</button>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <h3>🚀 Quick Links</h3>
+        </div>
+        <div style="padding:1rem;display:flex;flex-direction:column;gap:0.5rem;">
+          <a href="index.html#courses" style="display:flex;align-items:center;gap:0.75rem;padding:0.7rem 0.75rem;border-radius:0.6rem;background:var(--cream);text-decoration:none;color:var(--ink);font-size:0.875rem;font-weight:500;transition:background 0.2s;" onmouseover="this.style.background='#e0dace'" onmouseout="this.style.background='var(--cream)'">
+            📚 Browse All Programs
+          </a>
+          <a href="index.html#curriculum" style="display:flex;align-items:center;gap:0.75rem;padding:0.7rem 0.75rem;border-radius:0.6rem;background:var(--cream);text-decoration:none;color:var(--ink);font-size:0.875rem;font-weight:500;transition:background 0.2s;" onmouseover="this.style.background='#e0dace'" onmouseout="this.style.background='var(--cream)'">
+            🗓️ Semester Curriculum
+          </a>
+          <a href="contact.html" style="display:flex;align-items:center;gap:0.75rem;padding:0.7rem 0.75rem;border-radius:0.6rem;background:var(--cream);text-decoration:none;color:var(--ink);font-size:0.875rem;font-weight:500;transition:background 0.2s;" onmouseover="this.style.background='#e0dace'" onmouseout="this.style.background='var(--cream)'">
+            💬 Submit Inquiry
+          </a>
+          <a href="index.html#resources" style="display:flex;align-items:center;gap:0.75rem;padding:0.7rem 0.75rem;border-radius:0.6rem;background:var(--cream);text-decoration:none;color:var(--ink);font-size:0.875rem;font-weight:500;transition:background 0.2s;" onmouseover="this.style.background='#e0dace'" onmouseout="this.style.background='var(--cream)'">
+            📦 Resources Library
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+  import { getFirestore, doc, getDoc, collection, query, where, orderBy, getDocs, updateDoc, serverTimestamp }
+    from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+  const firebaseConfig = {
+  apiKey: "AIzaSyBiSe9fOKW_vq_859682VvggeZHdAg2A4M",
+  authDomain: "educ-5ef59.firebaseapp.com",
+  projectId: "educ-5ef59",
+  storageBucket: "educ-5ef59.firebasestorage.app",
+  messagingSenderId: "1016873997515",
+  appId: "1:1016873997515:web:4c486377c6a7ed5291374e",
+  measurementId: "G-VRBEQ6VDVD"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+
+  // ── GREETING ──
+  const hr = new Date().getHours();
+  document.getElementById('greetTime').textContent =
+    hr < 12 ? 'Good morning ☀️' : hr < 17 ? 'Good afternoon 🌤️' : 'Good evening 🌙';
+
+  // ── AUTH GUARD ──
+  onAuthStateChanged(auth, async user => {
+    if (!user) { window.location.href = 'login.html'; return; }
+
+    // Update last login
+    await updateDoc(doc(db, 'users', user.uid), { lastLogin: serverTimestamp() }).catch(() => {});
+
+    // Load profile
+    const snap = await getDoc(doc(db, 'users', user.uid));
+    if (snap.exists()) {
+      const d = snap.data();
+      const name = `${d.firstName || ''} ${d.lastName || ''}`.trim() || user.displayName || 'Student';
+      const initials = name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0,2);
+
+      document.getElementById('dashGreet').textContent = `Welcome back, ${d.firstName || name}!`;
+      document.getElementById('sideName').textContent = name;
+      document.getElementById('sideProg').textContent = d.program || 'Program not set';
+      document.getElementById('profileName').textContent = name;
+      document.getElementById('profileProg').textContent = d.program || '—';
+      document.getElementById('profileEmail').textContent = user.email || '—';
+      document.getElementById('profileSem').textContent = d.semester || '—';
+      document.getElementById('profileCollege').textContent = d.college || '—';
+      document.getElementById('statSem').textContent = (d.semester || '—').replace(' Semester','');
+      document.getElementById('statProg').textContent = d.program || '—';
+
+      if (user.photoURL) {
+        ['sideAvatar','profileAvatar'].forEach(id => {
+          document.getElementById(id).innerHTML = `<img src="${user.photoURL}" alt="avatar"/>`;
+        });
+      } else {
+        ['sideAvatar','profileAvatar'].forEach(id => {
+          document.getElementById(id).textContent = initials;
+        });
+      }
+
+      // Load notes for this program
+      await loadNotes(d.program);
+      await loadStats(user.uid);
+    }
+
+    await loadAnnouncements();
+  });
+
+  async function loadNotes(program) {
+    const container = document.getElementById('notesList');
+    const countEl = document.getElementById('notesCount');
+    try {
+      const q = query(collection(db, 'notes'),
+        where('programs', 'array-contains', program || 'ALL'),
+        orderBy('createdAt', 'desc'));
+      const snap = await getDocs(q);
+
+      if (snap.empty) {
+        // Fallback: load all notes
+        const allQ = query(collection(db, 'notes'), orderBy('createdAt', 'desc'));
+        const allSnap = await getDocs(allQ);
+        if (allSnap.empty) {
+          container.innerHTML = '<div class="empty-state"><div>📭</div>No resources uploaded yet. Check back soon!</div>';
+          countEl.textContent = '0 files';
+          return;
+        }
+        renderNotes(allSnap.docs, container, countEl);
+      } else {
+        renderNotes(snap.docs, container, countEl);
+      }
+    } catch(e) {
+      container.innerHTML = '<div class="empty-state"><div>⚠️</div>Could not load resources. Check Firebase setup.</div>';
+      countEl.textContent = 'Error';
+    }
+  }
+
+  function renderNotes(docs, container, countEl) {
+    countEl.textContent = `${docs.length} file${docs.length !== 1 ? 's' : ''}`;
+    const colors = ['#e84d0e18','#1a56e818','#22b97a18','#d4a01718'];
+    const icons  = ['📄','📝','📋','📓','📊','🗂️'];
+    container.innerHTML = docs.map((d, i) => {
+      const data = d.data();
+      return `
+      <div class="note-row" onclick="window.open('${data.fileURL || '#'}','_blank')">
+        <div class="note-icon" style="background:${colors[i%colors.length]}">${icons[i%icons.length]}</div>
+        <div>
+          <div class="note-title">${data.title || 'Untitled Resource'}</div>
+          <div class="note-meta">${data.program || 'All Programs'} • ${data.subject || ''} • ${data.type || 'Document'}</div>
+        </div>
+        <div class="note-download">↓ Download</div>
+      </div>`;
+    }).join('');
+  }
+
+  async function loadStats(uid) {
+    try {
+      const iQ = query(collection(db, 'inquiries'), where('userId', '==', uid));
+      const iSnap = await getDocs(iQ);
+      document.getElementById('statInquiries').textContent = iSnap.size;
+      document.getElementById('statDownloads').textContent = Math.floor(Math.random()*12); // placeholder
+    } catch(e) {}
+  }
+
+  async function loadAnnouncements() {
+    const container = document.getElementById('announceList');
+    try {
+      const q = query(collection(db, 'announcements'), orderBy('createdAt', 'desc'));
+      const snap = await getDocs(q);
+      if (snap.empty) {
+        container.innerHTML = '<div class="empty-state" style="padding:1.5rem;"><div>📢</div>No announcements yet.</div>';
+        return;
+      }
+      container.innerHTML = snap.docs.slice(0,4).map(d => {
+        const data = d.data();
+        const date = data.createdAt?.toDate?.()?.toLocaleDateString('en-NP', {month:'short',day:'numeric',year:'numeric'}) || '';
+        return `<div class="announcement-item">
+          <div class="announcement-title">${data.title || 'Announcement'}</div>
+          <div style="font-size:0.8rem;color:var(--muted);margin:0.2rem 0 0.2rem;">${data.message || ''}</div>
+          <div class="announcement-date">${date}</div>
+        </div>`;
+      }).join('');
+    } catch(e) {
+      container.innerHTML = '<div class="empty-state" style="padding:1.5rem;"><div>📢</div>No announcements.</div>';
+    }
+  }
+
+  window.logoutUser = async function() {
+    await signOut(auth);
+    window.location.href = 'login.html';
+  };
+</script>
+</body>
+</html>
